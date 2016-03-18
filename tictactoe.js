@@ -8,7 +8,7 @@ if (Meteor.isClient) {
   Template.box.events({
     click: function(){
       var boxFilled = this.player;
-      if(boxFilled) {
+      if(boxFilled || hasWon()) {
         return; //do nothing
       }
       //otherwise, update the collection
@@ -32,6 +32,15 @@ if (Meteor.isClient) {
   Template.gameboard.helpers({
     boxes: function(){
       return Boxes.find({});
+    },
+    player: function() {
+      return Session.get('player');
+    },
+    hasWon: function() {
+      return hasWon();
+    },
+    winner: function() {
+      return Session.get('player');
     }
   });
 
@@ -87,7 +96,7 @@ if (Meteor.isServer) {
     //just to be sure, we want to begin with a new collection
     Boxes.remove({});
     //and fill it with 9 boxes
-    if(Boxes.find().count() === 0) {
+    if(Boxes.find({}).count() === 0) {
       for(var i = 0; i < 9; i++){
         Boxes.insert({});
         console.log('inserted box with index', i);

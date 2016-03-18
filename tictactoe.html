@@ -4,13 +4,19 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
 
   {{>gameboard}}
 
 </body>
 
 <template name="gameboard">
+
+  {{#if hasWon}}
+    <h1 class="winner">The winner is... <strong>{{winner}}</strong>!</h1>
+  {{else}}
+    <h1 class="current">It is <strong>{{player}}</strong> turn!</h1>
+  {{/if}}
+
   <div class="gameboard">
     {{#each boxes}}
       {{>box}}
